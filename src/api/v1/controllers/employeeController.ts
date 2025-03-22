@@ -1,111 +1,99 @@
-import { Request, Response } from "express";
-import * as employeeService from "../services/employeeService";
-import { Employee } from "../interfaces/Employee";
+/* eslint-disable */
+import { Request, Response, NextFunction } from "express"; 
+import { EmployeeService } from "../services/employeeService";
 
-// Helper function to handle unknown errors
-const handleError = (error: unknown, res: Response, message: string) => {
-  if (error instanceof Error) {
-    res.status(500).json({ message, error: error.message });
-  } else {
-    res.status(500).json({ message, error: "An unknown error occurred" });
-  }
-};
+export class EmployeeController {
+    constructor(private employeeService: EmployeeService) { }
 
-// Create a new employee
-export const createEmployee = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const employeeData: Employee = req.body;
-    const newEmployee = await employeeService.createEmployee(employeeData);
-    res.status(201).json(newEmployee);
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error creating employee");
-  }
-};
-
-// Get all employees
-export const getAllEmployees = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const employees = await employeeService.getAllEmployees();
-    res.status(200).json(employees);
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error fetching employees");
-  }
-};
-
-// Get employee by ID
-export const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const employeeId = parseInt(req.params.id, 10);
-    const employee = await employeeService.getEmployeeById(employeeId);
-    
-    if (employee) {
-      res.status(200).json(employee);
-    } else {
-      res.status(404).json({ message: "Employee not found" });
+    async createEmployee(req: Request, res: Response, next: NextFunction) { 
+        try {
+            const employeeData = req.body;
+            const newEmployee = await this.employeeService.createEmployee(employeeData);
+            res.status(201).json(newEmployee);
+        } catch (error) {
+            console.error("Controller: Error creating employee:", error);
+            next(error); 
+        }
     }
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error fetching employee");
-  }
-};
 
-// Update employee details
-export const updateEmployee = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const employeeId = parseInt(req.params.id, 10);
-    const updatedData: Partial<Employee> = req.body;
-    const updatedEmployee = await employeeService.updateEmployee(employeeId, updatedData);
-
-    if (updatedEmployee) {
-      res.status(200).json(updatedEmployee);
-    } else {
-      res.status(404).json({ message: "Employee not found" });
+    async getAllEmployees(req: Request, res: Response, next: NextFunction) { 
+        try {
+            const employees = await this.employeeService.getAllEmployees();
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error("Controller: Error getting all employees:", error);
+            next(error); 
+        }
     }
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error updating employee");
-  }
-};
 
-// Delete employee
-export const deleteEmployee = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const employeeId = parseInt(req.params.id, 10);
-    const result = await employeeService.deleteEmployee(employeeId);
-
-    if (result) {
-      res.status(200).json({ message: "Employee deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Employee not found" });
+    async getEmployeeById(req: Request, res: Response, next: NextFunction) {
+        const id = req.params.id;
+        try {
+            const employee = await this.employeeService.getEmployeeById(id);
+            if (employee) {
+                res.status(200).json(employee);
+            } else {
+                res.status(404).json({ error: "Employee not found" });
+            }
+        } catch (error) {
+            console.error("Controller: Error getting employee by ID:", error);
+            next(error); 
+        }
     }
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error deleting employee");
-  }
-};
 
-// Get employees by branch ID
-export const getEmployeesByBranch = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const branchId = parseInt(req.params.branchId, 10);
-    const employees = await employeeService.getEmployeesByBranch(branchId);
-    res.status(200).json(employees);
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error fetching employees by branch");
-  }
-};
+    async updateEmployee(req: Request, res: Response, next: NextFunction) { 
+        const id = req.params.id;
+        const updateData = req.body;
+        try {
+            const updatedEmployee = await this.employeeService.updateEmployee(id, updateData);
+            if (updatedEmployee) {
+                res.status(200).json(updatedEmployee);
+            } else {
+                res.status(404).json({ error: "Employee not found" });
+            }
+        } catch (error) {
+            console.error("Controller: Error updating employee:", error);
+            next(error); 
+        }
+    }
 
-// Get employees by department
-export const getEmployeesByDepartment = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const department = req.params.department;
-    const employees = await employeeService.getEmployeesByDepartment(department);
-    res.status(200).json(employees);
-  } catch (error) {
-    console.error(error);
-    handleError(error, res, "Error fetching employees by department");
-  }
-};
+    async deleteEmployee(req: Request, res: Response, next: NextFunction) { 
+        const id = req.params.id;
+        try {
+            const success = await this.employeeService.deleteEmployee(id);
+            if (success) {
+                res.status(200).json({ message: "Employee deleted successfully" });
+            } else {
+                res.status(404).json({ error: "Employee not found" });
+            }
+        } catch (error) {
+            console.error("Controller: Error deleting employee:", error);
+            next(error); 
+        }
+    }
+
+    async getEmployeesByBranch(req: Request, res: Response, next: NextFunction) {
+        const branchId = parseInt(req.params.branchId, 10);
+
+        console.log("Controller: Getting employees by branch ID:", branchId);
+
+        try {
+            const employees = await this.employeeService.getEmployeesByBranch(branchId);
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error("Controller: Error getting employees by branch ID:", error);
+            next(error); 
+        }
+    }
+
+    async getEmployeesByDepartment(req: Request, res: Response, next: NextFunction) { 
+        const department = req.params.department;
+        try {
+            const employees = await this.employeeService.getEmployeesByDepartment(department);
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error("Controller: Error getting employees by department:", error);
+            next(error); 
+        }
+    }
+}
