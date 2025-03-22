@@ -11,6 +11,13 @@ const serviceAccount = {
   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
 } as ServiceAccount;
 
+console.log("Firebase Private Key:", serviceAccount.privateKey);
+
+// Initialize the Firebase app with the service account credentials
+initializeApp({
+  credential: cert(serviceAccount),
+});
+
 // Get a reference to the Firestore service
 const db: Firestore = getFirestore();
 
