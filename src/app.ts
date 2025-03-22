@@ -38,20 +38,11 @@ const options = {
       version: "1.0.0",
       description: "API for managing employees and branches in the company",
     },
-    servers: [{ url: "http://localhost:3000" }],
+    servers: [{ url: `http://localhost:${process.env.PORT || 3000}` }],
     tags: [
-      {
-        name: "Server Health Check",
-        description: "API to check the server's health status",
-      },
-      {
-        name: "Employee Management",
-        description: "Operations related to managing employees",
-      },
-      {
-        name: "Branch Management",
-        description: "Operations related to managing branches",
-      },
+      { name: "Server Health Check", description: "API to check the server's health status" },
+      { name: "Employee Management", description: "Operations related to managing employees" },
+      { name: "Branch Management", description: "Operations related to managing branches" },
     ],
   },
   apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
