@@ -1,9 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Application } from "express";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
+import { errorHandler } from "./api/v1/middleware/errorHandler.middleware";
+import helmet from "helmet";
 
 // Initialize express app
 const app: Application = express();
@@ -11,6 +16,7 @@ const app: Application = express();
 // Middleware
 app.use(express.json());
 app.use(morgan("combined"));
+app.use(helmet());
 
 // // Integrate Swagger
 // setupSwagger(app);
