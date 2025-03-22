@@ -58,6 +58,18 @@ const options = {
             branchId: { type: 'string' },
           },
         },
+        NewEmployee: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', required: true },
+            position: { type: 'string', required: true },
+            department: { type: 'string', required: true },
+            email: { type: 'string', format: 'email', required: true },
+            phone: { type: 'string', required: true },
+            branchId: { type: 'string', required: true },
+          },
+          required: ['name', 'position', 'department', 'email', 'phone', 'branchId'],
+        },
   },
   apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
 };
