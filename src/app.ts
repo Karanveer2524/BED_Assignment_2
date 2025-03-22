@@ -44,6 +44,20 @@ const options = {
       { name: "Employee Management", description: "Operations related to managing employees" },
       { name: "Branch Management", description: "Operations related to managing branches" },
     ],
+    components: {
+      schemas: {
+        Employee: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'Employee ID' },
+            name: { type: 'string' },
+            position: { type: 'string' },
+            department: { type: 'string' },
+            email: { type: 'string', format: 'email' },
+            phone: { type: 'string' },
+            branchId: { type: 'string' },
+          },
+        },
   },
   apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
 };
