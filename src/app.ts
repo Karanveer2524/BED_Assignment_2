@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
+import { errorHandler } from "./api/v1/middleware/errorHandler.middleware"
 
 // Initialize express app
 const app: Application = express();
@@ -11,9 +12,6 @@ const app: Application = express();
 // Middleware
 app.use(express.json());
 app.use(morgan("combined"));
-
-// // Integrate Swagger
-// setupSwagger(app);
 
 // Swagger setup
 const options = {
@@ -46,7 +44,6 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-
 // Employee routes
 app.use("/api/v1/employees", employeeRoutes);
 
@@ -70,5 +67,14 @@ app.use("/api/v1/branches", branchRoutes);
 app.get("/health", (req, res) => {
   res.status(200).send("Server is healthy");
 });
+
+// Error Handling Middleware
+app.use(errorHandler); // Register error handler AFTER routes
+
+// Start server (only if not in test environment)
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+}
 
 export default app;
