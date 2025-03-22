@@ -70,6 +70,17 @@ const options = {
           },
           required: ['name', 'position', 'department', 'email', 'phone', 'branchId'],
         },
+        UpdateEmployee: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            position: { type: 'string' },
+            department: { type: 'string' },
+            email: { type: 'string', format: 'email' },
+            phone: { type: 'string' },
+            branchId: { type: 'string' },
+          },
+        },
   },
   apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
 };
