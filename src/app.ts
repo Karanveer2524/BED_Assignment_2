@@ -9,6 +9,7 @@ import employeeRoutes from "./api/v1/routes/employeeRoutes";
 import branchRoutes from "./api/v1/routes/branchRoutes";
 import { errorHandler } from "./api/v1/middleware/errorHandler";
 import helmet from "helmet";
+import cors from "cors";
 
 // Initialize express app
 const app: Application = express();
@@ -17,6 +18,8 @@ const app: Application = express();
 app.use(express.json());
 app.use(morgan("combined"));
 app.use(helmet());
+app.use(cors());
+
 
 // Swagger setup
 const options = {

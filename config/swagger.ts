@@ -7,15 +7,30 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Library API",
-      version: "1.0.0",
-      description: "API documentation for the Library system",
+        title: "Task Management API Documentation",
+        version: "1.0.0",
+        description:
+            "This is the API documentation for the Task Management application.",
     },
     servers: [
-      {
-        url: "http://localhost:3000",
-        description: "Local development server",
-      },
+        {
+            url: "http://localhost:3000/api/v1",
+            description: "Local server",
+        },
+    ],
+    components: {
+        securitySchemes: {
+            bearerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT",
+            },
+        },
+    },
+    security: [
+        {
+            bearerAuth: [],
+        },
     ],
   },
   apis: ["src/api/v1/routes/routes.ts"],
