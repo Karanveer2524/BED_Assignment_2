@@ -129,8 +129,31 @@ router.get("/:id", employeeController.getEmployeeById.bind(employeeController));
  *       500:
  *         description: Internal server error
  */
-router.put("/employees/:id", employeeController.updateEmployee);
-router.delete("/employees/:id", employeeController.deleteEmployee);
+router.put("/:id", validateRequest(updateEmployeeSchema), employeeController.updateEmployee.bind(employeeController));
+
+/**
+ * @swagger
+ * /api/v1/employees/{id}:
+ *   delete:
+ *     summary: Delete an employee
+ *     description: Deletes the employee with the specified ID.
+ *     tags: [Employee Management]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Employee ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee deleted successfully
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete("/:id", employeeController.deleteEmployee.bind(employeeController));
 
 // Logical Operation Endpoints
 router.get("/employees/branch/:branchId", employeeController.getEmployeesByBranch);
