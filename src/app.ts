@@ -90,8 +90,27 @@ const options = {
             phone: { type: 'string' },
           },
         },
+        NewBranch: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', required: true },
+            address: { type: 'string', required: true },
+            phone: { type: 'string' },
+          },
+          required: ['name', 'address'],
+        },
+        UpdateBranch: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            address: { type: 'string' },
+            phone: { type: 'string' },
+          },
+        },
+      },
+    },
   },
-  apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
+  apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
