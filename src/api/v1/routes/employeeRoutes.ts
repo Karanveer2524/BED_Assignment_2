@@ -68,7 +68,67 @@ router.post("/", validateRequest(createEmployeeSchema), employeeController.creat
  *         description: Internal server error
  */
 router.get("/", employeeController.getAllEmployees.bind(employeeController));
-router.get("/employees/:id", employeeController.getEmployeeById);
+
+/**
+ * @swagger
+ * /api/v1/employees/{id}:
+ *   get:
+ *     summary: Get employee by ID
+ *     description: Returns the employee with the specified ID.
+ *     tags: [Employee Management]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Employee ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Employee found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id", employeeController.getEmployeeById.bind(employeeController));
+
+/**
+ * @swagger
+ * /api/v1/employees/{id}:
+ *   put:
+ *     summary: Update an employee
+ *     description: Updates an employee's details.
+ *     tags: [Employee Management]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: Employee ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateEmployee'
+ *     responses:
+ *       200:
+ *         description: Employee updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Employee'
+ *       404:
+ *         description: Employee not found
+ *       500:
+ *         description: Internal server error
+ */
 router.put("/employees/:id", employeeController.updateEmployee);
 router.delete("/employees/:id", employeeController.deleteEmployee);
 
