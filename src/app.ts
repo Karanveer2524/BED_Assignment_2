@@ -81,6 +81,15 @@ const options = {
             branchId: { type: 'string' },
           },
         },
+        Branch: {
+          type: 'object',
+          properties: {
+            id: { type: 'string', description: 'Branch ID' },
+            name: { type: 'string' },
+            address: { type: 'string' },
+            phone: { type: 'string' },
+          },
+        },
   },
   apis: ["./src/api/v1/routes/*.ts", "./src/app.ts"], 
 };
