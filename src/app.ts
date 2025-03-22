@@ -20,6 +20,14 @@ app.use(morgan("combined"));
 app.use(helmet());
 app.use(cors());
 
+// CORS Configuration for localhost development
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:3001'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
 // Swagger setup
 const options = {
