@@ -214,3 +214,28 @@ const response = await fetch('http://localhost:3000/api/v1/branches/1', {
 });
 console.log(response.status); // 204 for successful deletion
 ```
+
+---
+
+## Accessing OpenAPI Documentation Locally
+The API documentation is available locally using Swagger UI. After starting the application, navigate to:
+```
+http://localhost:3000/api-docs
+```
+
+---
+
+## Postman Collection
+You can interact with the API using the provided Postman collection. Import the collection from the following link:
+[Postman Collection](https://www.postman.com/collections/c12feef8-cb8d-4683-a5ff-952aafafba94)
+
+---
+
+## Secure Setup Instructions
+- Store sensitive information (e.g., Firebase credentials) in the `.env` file.
+- Never commit the `.env` file to version control. Add it to `.gitignore`:
+  ```gitignore
+  .env
+  ```
+
+---

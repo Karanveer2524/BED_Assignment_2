@@ -10,6 +10,8 @@ import branchRoutes from "./api/v1/routes/branchRoutes";
 import { errorHandler } from "./api/v1/middleware/errorHandler";
 import helmet from "helmet";
 import cors from "cors";
+import fs from 'fs';
+import path from 'path';
 
 // Initialize express app
 const app: Application = express();
@@ -18,7 +20,6 @@ const app: Application = express();
 app.use(express.json());
 app.use(morgan("combined"));
 app.use(helmet());
-app.use(cors());
 
 // CORS Configuration for localhost development
 const corsOptions = {
@@ -115,6 +116,20 @@ const options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// --- START: Code to write swaggerSpec to openapi.json ---
+const outputDir = path.resolve(__dirname, '../public');
+const outputFile = path.join(outputDir, 'openapi.json');
+
+// Create the output directory if it doesn't exist
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir);
+}
+
+// Write the swaggerSpec object to the openapi.json file
+fs.writeFileSync(outputFile, JSON.stringify(swaggerSpec, null, 2));
+
+console.log(`OpenAPI specification written to ${outputFile}`);
 
 // Employee routes
 app.use("/api/v1/employees", employeeRoutes);
