@@ -12,3 +12,22 @@ This API provides management functionalities for **branches** and **employees**.
 - **CI/CD**: GitHub Actions for continuous integration and linting.
 
 ---
+
+## Installation Instructions
+
+### Prerequisites
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- Firebase account (for database configuration)
+
+### Steps to Set Up the Project
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Karanveer2524/BED_Assignment_2.git
+   cd BED_Assignment_2
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
