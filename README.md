@@ -79,3 +79,27 @@ const newEmployee = {
   phone: "506-555-4536",
   branchId: 9
 };
+
+const response = await fetch('http://localhost:3000/api/v1/employees', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(newEmployee)
+});
+const data = await response.json();
+console.log(data);
+
+Postman Example
+Request URL
+Copy
+http://localhost:3000/api/v1/employees
+Request Body (JSON)
+json
+Copy
+{
+  "name": "JP",
+  "position": "Customer Service Supervisor",
+  "department": "Customer Service",
+  "email": "JP.king@global-relew.com",
+  "phone": "485-633-7585",
+  "branchId": 9
+}
