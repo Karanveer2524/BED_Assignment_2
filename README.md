@@ -239,3 +239,36 @@ You can interact with the API using the provided Postman collection. Import the 
   ```
 
 ---
+
+## Running Tests
+To run the unit and integration tests:
+```bash
+npm test
+```
+
+---
+
+## Continuous Integration
+This project uses GitHub Actions for CI/CD. The workflows are located in `.github/workflows/`:
+- **CI Pipeline**: Runs tests on every push to the `main` branch.
+- **Linting Pipeline**: Ensures code quality using ESLint.
+
+---
+
+## Contributing
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
+5. Open a pull request.
+
+---
+
+## Reporting Issues
+If you encounter any issues, please [open an issue](https://github.com/Karanveer2524/BED_Assignment_2/issues) on GitHub.
+
+---
+
+## License
+Created by Karanveer Singh
