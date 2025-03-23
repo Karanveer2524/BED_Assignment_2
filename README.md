@@ -103,3 +103,65 @@ Copy
   "phone": "485-633-7585",
   "branchId": 9
 }
+Response (201 Created)
+json
+Copy
+{
+  "name": "JP",
+  "position": "Customer Service Supervisor",
+  "department": "Customer Service",
+  "email": "JP.king@global-relew.com",
+  "phone": "485-633-7585",
+  "branchId": 9,
+  "id": "HTTPQW/kingFMO-TRALL"
+}
+```
+
+#### Get Employee by ID
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/employees/t4zLtWdv0jKXpiXMInbP');
+const data = await response.json();
+console.log(data);
+```
+
+#### Update Employee
+```typescript
+const updatedEmployee = {
+  name: "AA King",
+  position: "Customer Service Supervisor",
+  department: "Customer Service",
+  email: "AA.king@pixell-river.com",
+  phone: "489-632-7896",
+  branchId: 9
+};
+
+const response = await fetch('http://localhost:3000/api/v1/employees/t4zLtWdv0jKXpiXMInbP', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(updatedEmployee)
+});
+const data = await response.json();
+console.log(data);
+```
+
+#### Delete Employee
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/employees/t4zLtWdv0jKXpiXMInbP', {
+  method: 'DELETE'
+});
+console.log(response.status); // 204 for successful deletion
+```
+
+#### Get Employees by Department
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/employees/department/Customer Service');
+const data = await response.json();
+console.log(data);
+```
+
+#### Get Employees by Branch ID
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/employees/branch/10');
+const data = await response.json();
+console.log(data);
+```
