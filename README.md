@@ -55,3 +55,27 @@ This API provides management functionalities for **branches** and **employees**.
    ```
 
 ---
+
+## Example Usage
+
+### Authentication
+This API does not require authentication for now. All endpoints are publicly accessible.
+
+### Sample Requests
+#### Get All Employees
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/employees');
+const data = await response.json();
+console.log(data);
+```
+
+#### Create a New Employee
+```typescript
+const newEmployee = {
+  name: "AA King",
+  position: "Customer Service Supervisor",
+  department: "Customer Service",
+  email: "AA.king@pixell-river.com",
+  phone: "506-555-4536",
+  branchId: 9
+};
