@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(morgan("combined"));
 app.use(helmet());
 
+
 // CORS Configuration for localhost development
 const corsOptions = {
   origin: ['http://localhost:3000', 'http://localhost:3001'],
@@ -116,6 +117,7 @@ const options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // --- START: Code to write swaggerSpec to openapi.json ---
 const outputDir = path.resolve(__dirname, '../public');
