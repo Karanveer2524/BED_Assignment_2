@@ -214,6 +214,11 @@ const response = await fetch('http://localhost:3000/api/v1/branches/1', {
 });
 console.log(response.status); // 204 for successful deletion
 ```
+---
+
+## Public API Documentation
+The API documentation is hosted on GitHub Pages and can be accessed here:
+[API Documentation](https://karanveer2524.github.io/API_BED_Assignment_5/)
 
 ---
 
