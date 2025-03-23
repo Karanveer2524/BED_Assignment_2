@@ -165,3 +165,52 @@ const response = await fetch('http://localhost:3000/api/v1/employees/branch/10')
 const data = await response.json();
 console.log(data);
 ```
+
+#### Create Branch
+```typescript
+const newBranch = {
+  name: "Saint John Branch",
+  address: "500 Fairville Blvd, Saint John, NB, E2M 5H7",
+  phone: "506-632-7894"
+};
+
+const response = await fetch('http://localhost:3000/api/v1/branches', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(newBranch)
+});
+const data = await response.json();
+console.log(data);
+```
+
+#### Get Branch by ID
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/branches/9');
+const data = await response.json();
+console.log(data);
+```
+
+#### Update Branch
+```typescript
+const updatedBranch = {
+  name: "Vancouver Branch",
+  address: "1300 Burrard St, Vancouver, BC, V6Z 2C7",
+  phone: "604-456-9999"
+};
+
+const response = await fetch('http://localhost:3000/api/v1/branches/1', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(updatedBranch)
+});
+const data = await response.json();
+console.log(data);
+```
+
+#### Delete Branch
+```typescript
+const response = await fetch('http://localhost:3000/api/v1/branches/1', {
+  method: 'DELETE'
+});
+console.log(response.status); // 204 for successful deletion
+```
