@@ -1,13 +1,21 @@
 import { Router } from "express";
-import { createBranch, getAllBranches, getBranchById, updateBranch, deleteBranch } from "../controllers/branchController";
+import { BranchController } from "../controllers/branchController";
+import { BranchService } from "../services/branchService";
+import { createBranchSchema, updateBranchSchema } from "../validations/branch.schema";
+import { validateRequest } from "../middleware/validate";
+import { FirebaseRepository } from "../repositories/firebaseRepository";
 
 const router = Router();
+
+const firebaseRepository = new FirebaseRepository();
+const branchService = new BranchService(firebaseRepository);
+const branchController = new BranchController(branchService);
 
 /**
  * @swagger
  * tags:
- *   name: Branch Management
- *   description: API endpoints for managing branches
+ *   - name: Branch Management
+ *     description: API endpoints for managing branches
  */
 
 /**
@@ -21,19 +29,24 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               address:
- *                 type: string
- *               phone:
- *                 type: string
+ *             $ref: '#/components/schemas/NewBranch'
  *     responses:
  *       201:
  *         description: Branch created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The ID of the newly created branch
+ *       400:
+ *         description: Invalid request body
+ *       500:
+ *         description: Internal server error
  */
-router.post("/", createBranch);
+router.post('/', validateRequest(createBranchSchema), branchController.createBranch);
 
 /**
  * @swagger
@@ -44,8 +57,16 @@ router.post("/", createBranch);
  *     responses:
  *       200:
  *         description: List of branches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Branch'
+ *       500:
+ *         description: Internal server error
  */
-router.get("/", getAllBranches);
+router.get("/", branchController.getAllBranches);
 
 /**
  * @swagger
@@ -54,18 +75,25 @@ router.get("/", getAllBranches);
  *     summary: Get branch by ID
  *     tags: [Branch Management]
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *         description: ID of the branch to retrieve
  *     responses:
  *       200:
  *         description: Branch found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Branch'
  *       404:
  *         description: Branch not found
+ *       500:
+ *         description: Internal server error
  */
-router.get("/:id", getBranchById);
+router.get("/:id", branchController.getBranchById);
 
 /**
  * @swagger
@@ -74,22 +102,33 @@ router.get("/:id", getBranchById);
  *     summary: Update a branch
  *     tags: [Branch Management]
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *         description: ID of the branch to update
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/UpdateBranch'
  *     responses:
  *       200:
  *         description: Branch updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Branch'
+ *       400:
+ *         description: Invalid request body
+ *       404:
+ *         description: Branch not found
+ *       500:
+ *         description: Internal server error
  */
-router.put("/:id", updateBranch);
+router.put("/:id", validateRequest(updateBranchSchema), branchController.updateBranch);
 
 /**
  * @swagger
@@ -98,15 +137,20 @@ router.put("/:id", updateBranch);
  *     summary: Delete a branch
  *     tags: [Branch Management]
  *     parameters:
- *       - name: id
- *         in: path
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
+ *         description: ID of the branch to delete
  *     responses:
  *       200:
  *         description: Branch deleted successfully
+ *       404:
+ *         description: Branch not found
+ *       500:
+ *         description: Internal server error
  */
-router.delete("/:id", deleteBranch);
+router.delete("/:id", branchController.deleteBranch);
 
 export default router;

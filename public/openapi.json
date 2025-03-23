@@ -1,0 +1,552 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Company API",
+    "version": "1.0.0",
+    "description": "API for managing employees and branches in the company"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Server Health Check",
+      "description": "API to check the server's health status"
+    },
+    {
+      "name": "Employee Management",
+      "description": "Operations related to managing employees"
+    },
+    {
+      "name": "Branch Management",
+      "description": "Operations related to managing branches"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Employee ID"
+          },
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "branchId": {
+            "type": "string"
+          }
+        }
+      },
+      "NewEmployee": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "position": {
+            "type": "string",
+            "required": true
+          },
+          "department": {
+            "type": "string",
+            "required": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "required": true
+          },
+          "phone": {
+            "type": "string",
+            "required": true
+          },
+          "branchId": {
+            "type": "string",
+            "required": true
+          }
+        },
+        "required": [
+          "name",
+          "position",
+          "department",
+          "email",
+          "phone",
+          "branchId"
+        ]
+      },
+      "UpdateEmployee": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "position": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "branchId": {
+            "type": "string"
+          }
+        }
+      },
+      "Branch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Branch ID"
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      },
+      "NewBranch": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "address": {
+            "type": "string",
+            "required": true
+          },
+          "phone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "address"
+        ]
+      },
+      "UpdateBranch": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/branches": {
+      "post": {
+        "summary": "Create a new branch",
+        "tags": [
+          "Branch Management"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewBranch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Branch created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the newly created branch"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all branches",
+        "tags": [
+          "Branch Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of branches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Branch"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/v1/branches/{id}": {
+      "get": {
+        "summary": "Get branch by ID",
+        "tags": [
+          "Branch Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the branch to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Branch found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Branch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Branch not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a branch",
+        "tags": [
+          "Branch Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the branch to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBranch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Branch updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Branch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "404": {
+            "description": "Branch not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a branch",
+        "tags": [
+          "Branch Management"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the branch to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Branch deleted successfully"
+          },
+          "404": {
+            "description": "Branch not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/v1/employees": {
+      "post": {
+        "summary": "Create a new employee",
+        "description": "Creates a new employee with the provided details.",
+        "tags": [
+          "Employee Management"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewEmployee"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The ID of the newly created employee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all employees",
+        "description": "Returns a list of all employees.",
+        "tags": [
+          "Employee Management"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of employees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/v1/employees/{id}": {
+      "get": {
+        "summary": "Get employee by ID",
+        "description": "Returns the employee with the specified ID.",
+        "tags": [
+          "Employee Management"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an employee",
+        "description": "Updates an employee's details.",
+        "tags": [
+          "Employee Management"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmployee"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an employee",
+        "description": "Deletes the employee with the specified ID.",
+        "tags": [
+          "Employee Management"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully"
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Check if the server is running.",
+        "responses": {
+          "200": {
+            "description": "Server is up and running"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "summary": "Server Health Check",
+        "tags": [
+          "Server Health Check"
+        ]
+      }
+    }
+  }
+}
