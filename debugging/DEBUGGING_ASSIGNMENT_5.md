@@ -23,3 +23,27 @@
   - Use a library like `envalid` for stricter environment variable validation.
 - **Understanding of the Project:**
   - Ensures that sensitive information (e.g., API keys, database URLs) is securely managed.
+
+### **Scenario 2: Helmet.js Integration**
+- **Breakpoint Location:** `app.use(helmet());` (Line 19 in your code)
+- **Objective:** Investigate how security headers are applied to enhance API protection.
+
+#### Debugger Observations:
+- **Variable States:**
+  - `req.headers`: Inspect the headers of incoming requests.
+  - `res.headers`: Inspect the headers of outgoing responses.
+- **Call Stack:**
+  - The call stack will show the sequence of middleware being applied to the Express app.
+- **Behavior:**
+  - The `helmet()` middleware should add security headers (e.g., `X-Content-Type-Options`, `X-Frame-Options`) to all responses.
+
+#### Analysis:
+- **What did you learn?**
+  - Confirms that security headers are being applied to all responses.
+- **Unexpected Behavior?**
+  - If headers are missing, check if `helmet()` is correctly configured and applied.
+- **Areas for Improvement:**
+  - Customize `helmet()` to enable or disable specific headers based on the environment.
+  - Test the application using security tools like `OWASP ZAP` to ensure headers are effective.
+- **Understanding of the Project:**
+  - Enhances the security of the API by mitigating common web vulnerabilities.
